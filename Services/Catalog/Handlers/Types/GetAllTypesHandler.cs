@@ -1,7 +1,5 @@
-using Catalog.Queries;
 using Catalog.Queries.Types;
 using Catalog.Repositories;
-using Catalog.Responses;
 using Catalog.Responses.Types;
 using MediatR;
 

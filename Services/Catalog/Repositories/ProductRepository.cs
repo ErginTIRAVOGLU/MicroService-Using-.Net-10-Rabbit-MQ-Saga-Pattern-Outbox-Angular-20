@@ -19,7 +19,7 @@ public sealed class ProductRepository : IProductRepository
     {
         if (products == null || !products.Any())
             return;
-            
+
         await _products.InsertManyAsync(products);
     }
 
@@ -50,7 +50,7 @@ public sealed class ProductRepository : IProductRepository
     {
         var builder = Builders<Product>.Filter;
         var filter = builder.Empty;
-        
+
         if (!string.IsNullOrEmpty(catalogSpecParams.Search))
         {
             filter &= builder.Where(p => p.Name.ToLower().Contains(catalogSpecParams.Search.ToLower()));
@@ -61,9 +61,19 @@ public sealed class ProductRepository : IProductRepository
             filter &= builder.Where(p => p.Brand.Id == catalogSpecParams.BrandId);
         }
 
+        if (!string.IsNullOrEmpty(catalogSpecParams.BrandName))
+        {
+            filter &= builder.Where(p => p.Brand.Name == catalogSpecParams.BrandName);
+        }
+
         if (!string.IsNullOrEmpty(catalogSpecParams.TypeId))
         {
             filter &= builder.Where(p => p.Type.Id == catalogSpecParams.TypeId);
+        }
+
+        if (!string.IsNullOrEmpty(catalogSpecParams.TypeName))
+        {
+            filter &= builder.Where(p => p.Type.Name == catalogSpecParams.TypeName);
         }
 
         var totalItems = await _products.CountDocumentsAsync(filter);

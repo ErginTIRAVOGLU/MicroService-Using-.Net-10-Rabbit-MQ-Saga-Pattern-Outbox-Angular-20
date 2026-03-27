@@ -2,9 +2,9 @@ namespace Catalog.Specifications;
 
 public sealed class CatalogSpecParams
 {
-    private const int MaxPageSize=70;
+    private const int MaxPageSize = 70;
     private int _pageSize = 10;
-    public int PageIndex {get; set;}=1;
+    public int PageIndex { get; set; } = 1;
     public int PageSize
     {
         get => _pageSize;
@@ -12,7 +12,9 @@ public sealed class CatalogSpecParams
     }
 
     public string? BrandId { get; set; }
+    public string? BrandName { get; set; }
     public string? TypeId { get; set; }
+    public string? TypeName { get; set; }
     public string? Sort { get; set; }
     public string? Search { get; set; }
 

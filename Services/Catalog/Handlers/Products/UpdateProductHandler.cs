@@ -44,7 +44,7 @@ public sealed class UpdateProductHandler : IRequestHandler<UpdateProductCommand,
             Name = request.Name,
             Price = request.Price,
             Summary = request.Summary,
-            CreatedDate = request.CreatedDate,
+            CreatedDate = existing.CreatedDate,
             UpdatedDate = DateTimeOffset.UtcNow
         };
 

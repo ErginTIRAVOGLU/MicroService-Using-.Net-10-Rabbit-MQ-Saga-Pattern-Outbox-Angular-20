@@ -1,8 +1,5 @@
-using Catalog.Entities;
-using Catalog.Queries;
 using Catalog.Queries.Products;
 using Catalog.Repositories;
-using Catalog.Responses;
 using Catalog.Responses.Products;
 using Catalog.Specifications;
 using MediatR;

@@ -1,6 +1,6 @@
 namespace Catalog.Specifications;
 
-public sealed class Pagination<T> where T : class
+public sealed class Pagination<T>  
 {
     public Pagination() { }
     public Pagination(int pageIndex, int pageSize, int count, IReadOnlyCollection<T> data)
@@ -15,5 +15,13 @@ public sealed class Pagination<T> where T : class
     public int Count { get; set; }
     public IReadOnlyCollection<T> Data { get; set; }= new List<T>();
 
-    
+     public Pagination<TResult> Map<TResult>(Func<T, TResult> selector) 
+    {
+        return new Pagination<TResult>(
+            PageIndex,
+            PageSize,
+            Count,
+            Data.Select(selector).ToList()
+        );
+    }
 }

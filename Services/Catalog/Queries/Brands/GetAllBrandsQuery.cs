@@ -1,4 +1,3 @@
-using Catalog.Responses;
 using Catalog.Responses.Brands;
 using MediatR;
 

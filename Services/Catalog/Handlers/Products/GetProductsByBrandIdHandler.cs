@@ -15,7 +15,7 @@ public sealed class GetProductsByBrandIdHandler : IRequestHandler<GetProductsByB
     }
     public async Task<IList<ProductResponse>> Handle(GetProductsByBrandQuery request, CancellationToken cancellationToken)
     {
-        var productList=await _productRepository.GetProductsByBrandIdAsync(request.Id!);
+        var productList=await _productRepository.GetProductsByBrandIdAsync(request.Id);
         return productList.Select(p => (ProductResponse)p).ToList();
     }
 

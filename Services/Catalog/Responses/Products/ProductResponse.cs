@@ -1,5 +1,4 @@
 using Catalog.Entities;
-using Catalog.Specifications;
 
 namespace Catalog.Responses.Products;
 
