@@ -4,7 +4,6 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
-  
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.72" />
     <PackageReference Include="Google.Api.CommonProtos" Version="2.17.0" />
@@ -15,7 +14,7 @@
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.4" />
     <PackageReference Include="Npgsql" Version="10.0.2" />
   </ItemGroup>
- <ItemGroup>
-  <Protobuf Include="Protos\Discount.proto" GrpcServices="Server" />
-</ItemGroup>
+  <ItemGroup>
+    <Protobuf Include="Protos\Discount.proto" GrpcServices="Server" />
+  </ItemGroup>
 </Project>

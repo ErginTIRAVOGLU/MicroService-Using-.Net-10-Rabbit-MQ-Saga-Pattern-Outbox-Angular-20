@@ -1,4 +1,3 @@
-using Basket.Entities;
 using Basket.Responses;
 using MediatR;
 

@@ -1,5 +1,7 @@
 <Solution>
-  <Folder Name="/Services/" /> 
+  <Folder Name="/Services/">
+   
+  </Folder> 
   <Folder Name="/Services/Basket/">
     <Project Path="Services/Basket/Basket.csproj" />
   </Folder>
@@ -8,5 +10,8 @@
   </Folder>
   <Folder Name="/Services/Discount/">
     <Project Path="Services/Discount/Discount.csproj" />
+  </Folder>
+  <Folder Name="/Services/OrderService/">
+    <Project Path="Services/OrderService/OrderService.csproj" />
   </Folder>
 </Solution>

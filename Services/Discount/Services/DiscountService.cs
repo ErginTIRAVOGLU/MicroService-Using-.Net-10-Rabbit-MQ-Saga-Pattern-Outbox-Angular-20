@@ -1,11 +1,9 @@
-using System.Data;
 using Discount.Commands;
 using Discount.Grpc.Protos;
 using Discount.Mappers;
 using Discount.Queries;
 using Grpc.Core;
 using MediatR;
-using Npgsql.Internal;
 
 namespace Discount.Services;
 
