@@ -40,7 +40,7 @@ public static class DBExtension
 
     private static void CallSeeder<TContext>(Action<TContext, IServiceProvider> seeder, TContext? context, IServiceProvider services) where TContext : DbContext
     {
-        context.Database.Migrate();
+        context!.Database.Migrate();
         seeder(context, services);
     }
 

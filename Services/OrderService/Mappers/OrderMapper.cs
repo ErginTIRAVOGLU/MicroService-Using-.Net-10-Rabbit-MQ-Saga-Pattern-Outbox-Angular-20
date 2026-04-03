@@ -1,3 +1,4 @@
+using EventBus.Messages.Events;
 using OrderService.Commands;
 using OrderService.DTOs;
 using OrderService.Entities;
@@ -91,5 +92,26 @@ public static class OrderMapper
         orderToUpdate.TotalPrice = orderCommand.TotalPrice;
         orderToUpdate.UserName = orderCommand.UserName;
         orderToUpdate.ZipCode = orderCommand.ZipCode;
+    }
+
+    public static CheckoutOrderCommand ToCheckoutOrderCommand(this BasketCheckoutEvent message)
+    {
+        return new CheckoutOrderCommand
+        {
+            UserName = message.UserName!,
+            AddressLine = message.AddressLine!,
+            CardName = message.CardName!,
+            CardNumber = message.CardNumber!,
+            Country = message.Country!,
+            Cvv = message.Cvv!,
+            EmailAddress = message.EmailAddres!,
+            Expiration = message.Expiration!,
+            FirstName = message.FirstName!,
+            LastName = message.LastName!,
+            PaymentMethod = message.PaymentMethod ?? 0,
+            State = message.State!,
+            TotalPrice = message.TotalPrice!,
+            ZipCode = message.ZipCode!
+        };
     }
 }

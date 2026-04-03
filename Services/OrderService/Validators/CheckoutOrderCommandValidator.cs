@@ -3,7 +3,7 @@ using OrderService.Commands;
 
 namespace OrderService.Validators;
 
-public sealed class CheckoutOrderCommandValidator:AbstractValidator<CheckoutOrderCommand>
+public sealed class CheckoutOrderCommandValidator : AbstractValidator<CheckoutOrderCommand>
 {
     public CheckoutOrderCommandValidator()
     {
@@ -88,7 +88,7 @@ public sealed class CheckoutOrderCommandValidator:AbstractValidator<CheckoutOrde
         if (!int.TryParse(parts[1], out int year)) return false;
 
         // Handle 2-digit year (e.g., "25" becomes 2025)
-        if (year < 100) 
+        if (year < 100)
             year += 2000;
 
         // Card is valid through the end of the expiration month

@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/InfraStructure/">
+    <Project Path="InfraStructure/EventBus.Messages/EventBus.Messages.csproj" />
+  </Folder>
   <Folder Name="/Services/">
    
   </Folder> 
