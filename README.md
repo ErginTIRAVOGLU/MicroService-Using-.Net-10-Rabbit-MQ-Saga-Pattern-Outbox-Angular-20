@@ -26,6 +26,8 @@
 *   Redis    
 *   Swagger
 *   Grpc - (Client)
+*   MassTransit
+*   RabbitMQ (Publisher/Producer)
     
 
 # Discount Service :
@@ -43,3 +45,5 @@
 *   Entity Framework Core
 *   Fluent Validation (with a custom validator)
 *   Swagger
+*   MassTransit
+*   RabbitMQ (Subscriber/Consumer)
