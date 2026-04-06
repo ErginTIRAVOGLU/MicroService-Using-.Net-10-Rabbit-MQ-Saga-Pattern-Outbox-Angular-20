@@ -2,7 +2,7 @@ namespace OrderService.Entities;
 
 public sealed class Order : BaseEntity
 {
-    public string? UserName {get;set;}
+    public string? UserName { get; set; }
     public decimal? TotalPrice { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }
@@ -16,4 +16,5 @@ public sealed class Order : BaseEntity
     public string? Expiration { get; set; }
     public string? Cvv { get; set; }
     public int? PaymentMethod { get; set; }
+    public OrderStatus Status { get; set; } = OrderStatus.Pending;
 }

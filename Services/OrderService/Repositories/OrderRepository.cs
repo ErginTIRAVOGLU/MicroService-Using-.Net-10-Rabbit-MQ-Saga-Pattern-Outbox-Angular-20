@@ -10,6 +10,11 @@ public sealed class OrderRepository : Repository<Order>, IOrderRepository
     {
     }
 
+    public async Task AddOutboxMessageAsync(OutboxMessage message)
+    {
+         await _dbContext.OutboxMessages.AddAsync(message);
+         await _dbContext.SaveChangesAsync();
+    }
 
     public async Task<IEnumerable<Order>> GetOrdersByUserName(string userName)
     {

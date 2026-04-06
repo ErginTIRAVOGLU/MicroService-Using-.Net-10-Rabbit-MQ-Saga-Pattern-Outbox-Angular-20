@@ -1,5 +1,7 @@
 using EventBus.Messages.Events;
+using Newtonsoft.Json;
 using OrderService.Commands;
+using OrderService.Constants;
 using OrderService.DTOs;
 using OrderService.Entities;
 
@@ -113,5 +115,34 @@ public static class OrderMapper
             TotalPrice = message.TotalPrice!,
             ZipCode = message.ZipCode!
         };
+    }
+
+    public static OutboxMessage ToOutboxMessage(Order order)
+    {
+         return new OutboxMessage
+         {
+                CorrelationId = Guid.NewGuid().ToString(),
+                Type = OutboxMessageTypes.OrderCreated,
+                OccouredOn=DateTime.UtcNow,
+                Content = JsonConvert.SerializeObject(new
+                {
+                    order.Id,
+                    order.UserName,
+                    order.TotalPrice,
+                    order.FirstName,
+                    order.LastName,
+                    order.EmailAddress,
+                    order.AddressLine,
+                    order.Country,
+                    order.State,
+                    order.ZipCode,
+                    order.CardName,
+                    order.CardNumber,
+                    order.Expiration,
+                    order.Cvv,
+                    order.PaymentMethod,
+                    order.Status
+                })
+         };
     }
 }
