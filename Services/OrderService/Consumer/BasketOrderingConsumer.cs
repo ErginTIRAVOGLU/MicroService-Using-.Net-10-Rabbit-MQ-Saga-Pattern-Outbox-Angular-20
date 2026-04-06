@@ -3,7 +3,7 @@ using MassTransit;
 using MediatR;
 using OrderService.Mappers;
 
-namespace OrderService.EventBusConsumer;
+namespace OrderService.Consumer;
 
 public sealed class BasketOrderingConsumer : IConsumer<BasketCheckoutEvent>
 {

@@ -4,6 +4,7 @@
 *   Basket (Carts)    
 *   Discount (Coupons)
 *   OrderService (Checkout)
+*   Payment (Payment)-(Simulated)
    
 # Docker Servers
 
@@ -47,3 +48,9 @@
 *   Swagger
 *   MassTransit
 *   RabbitMQ (Subscriber/Consumer)
+
+# Payment Service (Simulated) :
+
+*   MassTransit
+*   RabbitMQ (Subscriber/Consumer)
+*   Swagger

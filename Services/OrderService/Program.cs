@@ -1,8 +1,8 @@
 using EventBus.Messages.Common;
 using MassTransit;
+using OrderService.Consumer;
 using OrderService.Data;
 using OrderService.Dispatcher;
-using OrderService.EventBusConsumer;
 using OrderService.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -27,23 +27,33 @@ builder.Services.AddHostedService<OutboxMessageDispatcher>();
 // Mass transit
 builder.Services.AddMassTransit(config =>
 {
-   config.AddConsumer<BasketOrderingConsumer>();
-   config.UsingRabbitMq((ctx,cfg) =>
-   {
-       cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
-       cfg.ReceiveEndpoint(EventBusConstant.BasketCheckoutQueue, c=>
+    config.AddConsumer<BasketOrderingConsumer>();
+    config.AddConsumer<PaymentFailedConsumer>();
+    config.AddConsumer<PaymentCompletedConsumer>();
+    config.UsingRabbitMq((ctx, cfg) =>
+    {
+        cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
+        cfg.ReceiveEndpoint(EventBusConstant.BasketCheckoutQueue, c =>
+        {
+            c.ConfigureConsumer<BasketOrderingConsumer>(ctx);
+        });
+        cfg.ReceiveEndpoint(EventBusConstant.PaymentFailedQueue, c =>
        {
-           c.ConfigureConsumer<BasketOrderingConsumer>(ctx);
-       });
-   }); 
+              c.ConfigureConsumer<PaymentFailedConsumer>(ctx);
+          });
+        cfg.ReceiveEndpoint(EventBusConstant.PaymentCompletedQueue, c =>
+      {
+              c.ConfigureConsumer<PaymentCompletedConsumer>(ctx);
+          });
+    });
 });
 
 var app = builder.Build();
 
-app.MigrateDatabase<OrderContext>((context,services)=>
+app.MigrateDatabase<OrderContext>((context, services) =>
 {
-   var logger= services.GetService<ILogger<OrderContextSeed>>();
-   OrderContextSeed.SeedAsync(context,logger!).Wait(); 
+    var logger = services.GetService<ILogger<OrderContextSeed>>();
+    OrderContextSeed.SeedAsync(context, logger!).Wait();
 });
 
 // Configure the HTTP request pipeline.
