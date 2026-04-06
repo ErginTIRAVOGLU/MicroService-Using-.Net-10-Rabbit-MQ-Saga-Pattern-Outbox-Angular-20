@@ -1,7 +1,7 @@
 <Solution>
   <Folder Name="/InfraStructure/">
     <Project Path="InfraStructure/EventBus.Messages/EventBus.Messages.csproj" />
-  </Folder>   
+  </Folder> 
   <Folder Name="/Services/Basket/">
     <Project Path="Services/Basket/Basket.csproj" />
   </Folder>
@@ -11,10 +11,13 @@
   <Folder Name="/Services/Discount/">
     <Project Path="Services/Discount/Discount.csproj" />
   </Folder>
+  <Folder Name="/Services/Identity/" >
+    <Project Path="Services/Identity/Identity.csproj" />
+  </Folder>
   <Folder Name="/Services/OrderService/">
     <Project Path="Services/OrderService/OrderService.csproj" />
   </Folder>
-  <Folder Name="/Services/Payment/" >
+  <Folder Name="/Services/Payment/">
     <Project Path="Services/Payment/Payment.csproj" />
   </Folder>
 </Solution>

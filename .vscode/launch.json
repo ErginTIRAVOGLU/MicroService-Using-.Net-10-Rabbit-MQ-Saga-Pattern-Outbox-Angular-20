@@ -11,7 +11,8 @@
                 "Catalog",
                 "Discount",
                 "OrderService",
-                "Payment"
+                "Payment",
+                "Identity"
             ]
         }
     ],
@@ -93,9 +94,25 @@
             "serverReadyAction": {
                 "action": "openExternally",
                 "pattern": "Now listening on: (https?://\\S+)",
+                "uriFormat": "%s/swagger" 
+            }
+        },
+        {
+            "name": "Identity",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/Services/Identity/bin/Debug/net10.0/Identity.dll",
+            "cwd": "${workspaceFolder}/Services/Identity",
+            "justMyCode": true,
+            "launchBrowser": {
+                "enabled": false,
+                "args": "https://localhost:8006/swagger"
+            },
+            "serverReadyAction": {
+                "action": "openExternally",
+                "pattern": "Now listening on: (https?://\\S+)",
                 "uriFormat": "%s/swagger"
             }
         }
-
     ]
 }
