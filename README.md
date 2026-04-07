@@ -6,6 +6,7 @@
 *   OrderService (Checkout)
 *   Payment (Payment)-(Simulated)
 *   Identity (Authentication and Authorization)
+*   Api Gateway (Ocelot)
    
 # Docker Servers
 
@@ -64,3 +65,7 @@
 *   ASP.NET Core Identity
 *   JWT Authentication
 *   Swagger
+
+# API Gateway (Ocelot) :
+
+*   Ocelot
