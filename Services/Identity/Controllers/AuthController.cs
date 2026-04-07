@@ -10,7 +10,7 @@ using Microsoft.IdentityModel.Tokens;
 namespace Identity.Controllers;
 
 [ApiController]
-[Route("api/[controller]")]
+[Route("api/v1/[controller]")]
 public sealed class AuthController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -23,7 +23,12 @@ public sealed class AuthController : ControllerBase
         _configuration = configuration;
         _logger = logger;
     }
-
+    
+    [HttpGet("test")]
+    public IActionResult Test()
+    {        return Ok("AuthController is working!");
+    }
+    
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {

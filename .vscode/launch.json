@@ -12,7 +12,8 @@
                 "Discount",
                 "OrderService",
                 "Payment",
-                "Identity"
+                "Identity",
+                "ApiGateway"
             ]
         }
     ],
@@ -112,6 +113,18 @@
                 "action": "openExternally",
                 "pattern": "Now listening on: (https?://\\S+)",
                 "uriFormat": "%s/swagger"
+            }
+        },
+        {
+            "name": "ApiGateway",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/ApiGateway/bin/Debug/net10.0/ApiGateway.dll",
+            "cwd": "${workspaceFolder}/ApiGateway",
+            "justMyCode": true,
+            "launchBrowser": {
+                "enabled": false,
+                "args": "https://localhost:8080"
             }
         }
     ]
