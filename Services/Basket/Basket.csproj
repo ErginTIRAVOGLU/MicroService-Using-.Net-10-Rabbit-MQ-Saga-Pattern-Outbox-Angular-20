@@ -24,5 +24,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\InfraStructure\EventBus.Messages\EventBus.Messages.csproj" />
+    <ProjectReference Include="..\..\InfraStructure\Common.Logging\Common.Logging.csproj" />
   </ItemGroup>
 </Project>

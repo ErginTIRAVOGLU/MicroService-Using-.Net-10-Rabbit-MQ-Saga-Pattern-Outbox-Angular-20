@@ -18,4 +18,5 @@ public sealed class OrderCreatedEvent : BaseIntegrationEvent
     public string Cvv { get; set; } = default!;
     public int PaymentMethod { get; set; } = default!;
     public string Status { get; set; } = default!;
+    
 }

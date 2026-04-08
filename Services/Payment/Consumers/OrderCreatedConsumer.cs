@@ -20,31 +20,36 @@ public sealed class OrderCreatedConsumer : IConsumer<OrderCreatedEvent>
         var message = context.Message;
         _logger.LogInformation("Received OrderCreated event for OrderId: {OrderId}", message.Id);
 
-        await Task.Delay(1000); // Simulate payment processing delay
-        if (message.TotalPrice > 0)
+        using (Serilog.Context.LogContext.PushProperty("CorrelationId", message.CorrelationId))
         {
-            var completedEvent = new PaymentCompletedEvent
+            _logger.LogInformation("Processing payment for OrderId: {OrderId} with CorrelationId: {CorrelationId}", message.Id, message.CorrelationId);
+            await Task.Delay(1000); // Simulate payment processing delay
+            if (message.TotalPrice > 0)
             {
-                OrderId = message.Id,
-                CorrelationId = context.CorrelationId ?? Guid.NewGuid(),
+                var completedEvent = new PaymentCompletedEvent
+                {
+                    OrderId = message.Id,
+                    CorrelationId = message.CorrelationId
 
-            };
-            await _publishEndpoint.Publish(completedEvent);
-            _logger.LogInformation("Published PaymentCompleted event for OrderId: {OrderId}", message.Id);
-        }
-        else
-        {
-            var failedEvent = new PaymentFailedEvent
+                };
+                await _publishEndpoint.Publish(completedEvent);
+                _logger.LogInformation("Published PaymentCompleted event for OrderId: {OrderId}", message.Id);
+            }
+            else
             {
-                OrderId = message.Id,
-                CorrelationId = context.CorrelationId ?? Guid.NewGuid(),
-                Reason = "Invalid total price, Total price was zero or negative."
-            };
-            await _publishEndpoint.Publish(failedEvent);
-            _logger.LogWarning("Payment failed for OrderId: {OrderId} due to invalid total price: {TotalPrice}", message.Id, message.TotalPrice);
+                var failedEvent = new PaymentFailedEvent
+                {
+                    OrderId = message.Id,
+                    CorrelationId = message.CorrelationId,
+
+
+                    Reason = "Invalid total price, Total price was zero or negative."
+                };
+                await _publishEndpoint.Publish(failedEvent);
+                _logger.LogWarning("Payment failed for OrderId: {OrderId} due to invalid total price: {TotalPrice}", message.Id, message.TotalPrice);
+            }
         }
 
-         
     }
 
 }

@@ -1,6 +1,6 @@
 namespace EventBus.Messages.Events;
 
-public sealed class PaymentFailedEvent : BaseIntegrationEvent
+public class PaymentFailedEvent : BaseIntegrationEvent
 {
     public int OrderId { get; set; }
     public string UserName { get; set; } = string.Empty;

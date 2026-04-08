@@ -2,12 +2,16 @@ using System.Reflection;
 using Catalog.Data;
 using Catalog.Handlers.Brands;
 using Catalog.Repositories;
+using Common.Logging;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
 using MongoDB.Driver;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(Logging.ConfigureLogger);
 
 BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
 BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
@@ -56,6 +60,7 @@ using (var scope = app.Services.CreateScope())
     await seeder.SeedAsync(app.Configuration);
 }
 
+ 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

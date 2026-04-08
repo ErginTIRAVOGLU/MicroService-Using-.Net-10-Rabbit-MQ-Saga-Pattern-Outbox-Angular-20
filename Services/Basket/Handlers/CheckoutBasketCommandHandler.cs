@@ -11,12 +11,15 @@ public sealed class CheckoutBasketCommandHandler : IRequestHandler<CheckoutBaske
     private readonly IMediator _mediator;
     private readonly IPublishEndpoint _publishEndpoint;
     private readonly ILogger<CheckoutBasketCommandHandler> _logger;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public CheckoutBasketCommandHandler(IMediator mediator, IPublishEndpoint publishEndpoint, ILogger<CheckoutBasketCommandHandler> logger)
+    public CheckoutBasketCommandHandler(IMediator mediator, IPublishEndpoint publishEndpoint, ILogger<CheckoutBasketCommandHandler> logger, IHttpContextAccessor httpContextAccessor)
     {
         _mediator = mediator;
         _publishEndpoint = publishEndpoint;
         _logger = logger;
+        _httpContextAccessor = httpContextAccessor;
+
     }
 
 
@@ -31,7 +34,13 @@ public sealed class CheckoutBasketCommandHandler : IRequestHandler<CheckoutBaske
         var basket = basketResponse.ToEntity();
 
         var evt = dto.ToBasketCheckoutEvent(basket);
-        _logger.LogInformation("Publishing BasketCheckoutEvent for {User}", basket.UserName);
+
+        var correlationIdHeader = _httpContextAccessor.HttpContext?.Request.Headers["CorrelationId"];
+        if (!string.IsNullOrEmpty(correlationIdHeader) && Guid.TryParse(correlationIdHeader, out Guid correlationId))
+        {
+            evt.CorrelationId = correlationId;
+        }
+        _logger.LogInformation("Publishing BasketCheckoutEvent for {User} with CorrelationId {CorrelationId}", basket.UserName, evt.CorrelationId);
         await _publishEndpoint.Publish(evt, cancellationToken);
 
         await _mediator.Send(new DeleteBasketByUserNameCommand(dto.UserName), cancellationToken);

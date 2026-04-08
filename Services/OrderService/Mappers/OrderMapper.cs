@@ -14,7 +14,7 @@ public static class OrderMapper
             order.FirstName!, order.LastName!, order.EmailAddress!,
             order.AddressLine!, order.Country!, order.State!,
             order.ZipCode!, order.CardName!, order.CardNumber!,
-            order.Expiration!, order.Cvv!, order.PaymentMethod!);
+            order.Expiration!, order.Cvv!, order.PaymentMethod!, order.CorrelationId);
     public static Order ToEntity(this CheckoutOrderCommand orderCommand)
     {
         return new Order
@@ -52,7 +52,8 @@ public static class OrderMapper
             State = createOrderDto.State,
             TotalPrice = createOrderDto.TotalPrice,
             UserName = createOrderDto.UserName,
-            ZipCode = createOrderDto.ZipCode
+            ZipCode = createOrderDto.ZipCode,
+            CorrelationId = createOrderDto.CorrelationId
         };
     }
 
@@ -74,7 +75,8 @@ public static class OrderMapper
             State = orderDto.State,
             TotalPrice = orderDto.TotalPrice,
             UserName = orderDto.UserName,
-            ZipCode = orderDto.ZipCode
+            ZipCode = orderDto.ZipCode,
+            CorrelationId = orderDto.CorrelationId
         };
     }
     public static void MapUpdate(this Order orderToUpdate,
@@ -117,32 +119,63 @@ public static class OrderMapper
         };
     }
 
-    public static OutboxMessage ToOutboxMessage(Order order)
+    internal static OutboxMessage ToOutboxMessage(Order order, Guid correlationId)
     {
+        var integrationEvent = new OrderCreatedEvent
+        {
+            Id = order.Id,
+            UserName = order.UserName!,
+            TotalPrice = (decimal)order.TotalPrice!,
+            FirstName = order.FirstName!,
+            LastName = order.LastName!,
+            EmailAddress = order.EmailAddress!,
+            AddressLine = order.AddressLine!,
+            Country = order.Country!,
+            State = order.State!,
+            ZipCode = order.ZipCode!,
+            CardName = order.CardName!,
+            CardNumber = order.CardNumber!,
+            Expiration = order.Expiration!,
+            Cvv = order.Cvv!,
+            PaymentMethod = (int)order.PaymentMethod!,
+            Status = order.Status.ToString()    
+        };
+
          return new OutboxMessage
          {
-                CorrelationId = Guid.NewGuid().ToString(),
-                Type = OutboxMessageTypes.OrderCreated,
-                OccouredOn=DateTime.UtcNow,
-                Content = JsonConvert.SerializeObject(new
-                {
-                    order.Id,
-                    order.UserName,
-                    order.TotalPrice,
-                    order.FirstName,
-                    order.LastName,
-                    order.EmailAddress,
-                    order.AddressLine,
-                    order.Country,
-                    order.State,
-                    order.ZipCode,
-                    order.CardName,
-                    order.CardNumber,
-                    order.Expiration,
-                    order.Cvv,
-                    order.PaymentMethod,
-                    order.Status
-                })
+             CorrelationId = correlationId.ToString(),
+             Type = OutboxMessageTypes.OrderCreated,
+             OccouredOn = DateTime.UtcNow,
+             Content = JsonConvert.SerializeObject(integrationEvent) 
          };
+    }
+
+    internal static OutboxMessage ToOutboxMessageForUpdate(Order order, Guid correlationId)
+    {
+        return new OutboxMessage
+        {
+            CorrelationId = correlationId.ToString(),
+            Type = OutboxMessageTypes.OrderUpdated,
+            OccouredOn = DateTime.UtcNow,
+            Content = JsonConvert.SerializeObject(new
+            {
+                order.Id,
+                order.UserName,
+                order.TotalPrice,
+                order.FirstName,
+                order.LastName,
+                order.EmailAddress,
+                order.AddressLine,
+                order.Country,
+                order.State,
+                order.ZipCode,
+                order.CardName,
+                order.CardNumber,
+                order.Expiration,
+                order.Cvv,
+                order.PaymentMethod,
+                order.Status
+            })
+        };
     }
 }

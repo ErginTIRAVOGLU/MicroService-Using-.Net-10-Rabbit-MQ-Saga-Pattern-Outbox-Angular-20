@@ -1,11 +1,14 @@
 using System.Reflection;
+using Common.Logging;
 using Discount.Extensions;
 using Discount.Handlers;
 using Discount.Repositories;
 using Discount.Services;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
  
+builder.Host.UseSerilog(Logging.ConfigureLogger);
 
 
 

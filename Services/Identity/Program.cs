@@ -1,4 +1,5 @@
 using System.Text;
+using Common.Logging;
 using Identity.Data;
 using Identity.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,8 +7,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(Logging.ConfigureLogger);
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -73,6 +78,8 @@ builder.Services.AddAuthorization();
  
 
 var app = builder.Build();
+
+ 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

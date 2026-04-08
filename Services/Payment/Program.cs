@@ -1,8 +1,13 @@
+using Common.Logging;
 using EventBus.Messages.Common;
 using MassTransit;
 using Payment.Consumers;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(Logging.ConfigureLogger);
+
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -26,6 +31,7 @@ builder.Services.AddMassTransit(config =>
 });
 
 var app = builder.Build();
+ 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

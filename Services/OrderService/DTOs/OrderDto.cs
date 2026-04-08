@@ -15,7 +15,8 @@ public sealed record OrderDto(
     string? CardNumber,
     string? Expiration,
     string? Cvv,
-    int? PaymentMethod
+    int? PaymentMethod,
+    Guid CorrelationId
 );
 
 
@@ -33,5 +34,6 @@ public sealed record CreateOrderDto(
     string? CardNumber,
     string? Expiration,
     string? Cvv,
-    int? PaymentMethod
+    int? PaymentMethod,
+    Guid CorrelationId
 );

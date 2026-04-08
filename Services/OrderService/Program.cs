@@ -1,11 +1,16 @@
+using Common.Logging;
 using EventBus.Messages.Common;
 using MassTransit;
 using OrderService.Consumer;
 using OrderService.Data;
 using OrderService.Dispatcher;
 using OrderService.Extensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog(Logging.ConfigureLogger);
+
 
 builder.Services.AddAuthorization();
 builder.Services.AddControllers();

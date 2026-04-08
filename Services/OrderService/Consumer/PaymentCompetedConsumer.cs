@@ -21,12 +21,12 @@ public sealed class PaymentCompletedConsumer : IConsumer<PaymentCompletedEvent>
         var order = await _orderRepository.GetByIdAsync(context.Message.OrderId);
         if (order is null)
         {
-            _logger.LogError("Order with id {OrderId} not found", context.Message.OrderId);
+            _logger.LogError($"Order with id {context.Message.OrderId} not found", context.Message.OrderId, context.Message.CorrelationId);
             return;
         }
         order.Status = OrderStatus.Paid;
         await _orderRepository.UpdateAsync(order); 
-        _logger.LogInformation("Order with id {OrderId} marked as paid", context.Message.OrderId);
+        _logger.LogInformation($"Order with id {context.Message.OrderId} marked as paid", context.Message.OrderId, context.Message.CorrelationId);
     }
 
 }

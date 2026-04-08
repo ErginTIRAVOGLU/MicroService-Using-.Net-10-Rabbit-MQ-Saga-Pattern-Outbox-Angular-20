@@ -2,11 +2,15 @@ using System.Reflection;
 using Basket.GrpcService;
 using Basket.Handlers;
 using Basket.Repositories;
+using Common.Logging;
 using Discount.Grpc.Protos;
 using MassTransit;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+builder.Host.UseSerilog(Logging.ConfigureLogger);
 
 builder.Services.AddControllers();
 
@@ -48,7 +52,11 @@ builder.Services.AddMassTransit(config =>
     });
 });
 
+
+builder.Services.AddHttpContextAccessor();
+
 var app = builder.Build();
+ 
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

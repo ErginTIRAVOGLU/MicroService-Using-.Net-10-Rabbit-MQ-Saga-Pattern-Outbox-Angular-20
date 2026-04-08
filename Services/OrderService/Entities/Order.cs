@@ -17,4 +17,5 @@ public sealed class Order : BaseEntity
     public string? Cvv { get; set; }
     public int? PaymentMethod { get; set; }
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
+    public Guid CorrelationId { get; set; } = Guid.NewGuid();
 }

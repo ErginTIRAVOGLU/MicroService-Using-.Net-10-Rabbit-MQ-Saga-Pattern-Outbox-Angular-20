@@ -25,15 +25,15 @@ public sealed class CheckoutOrderHandler : IRequestHandler<CheckoutOrderCommand,
         {
             var generatedOrder = await _orderRepository.AddAsync(orderEntity);
 
-            var outboxMessage = OrderMapper.ToOutboxMessage(generatedOrder);
+            var outboxMessage = OrderMapper.ToOutboxMessage(generatedOrder, request.CorrelationId);
             await _orderRepository.AddOutboxMessageAsync(outboxMessage);
 
-            _logger.LogInformation($"Order with Id {generatedOrder.Id} successfully created.");
+            _logger.LogInformation($"Order with Id {generatedOrder.Id} and Correlation ID {request.CorrelationId} successfully created.");
             return generatedOrder.Id;
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Error occurred while processing order with Id {orderEntity.Id}.");
+            _logger.LogError(ex, $"Error occurred while processing order with Id {orderEntity.Id} and Correlation ID {request.CorrelationId}.");
             throw;
         }
 
