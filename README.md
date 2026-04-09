@@ -9,6 +9,7 @@
 *   Api Gateway (Ocelot)<br><br>
 
 *   Logging (Serilog)
+*   Docker Servers (MongoDB, Redis, PostgreSql, Mssql, RabbitMQ, Elasticsearch, Kibana)
    
 # Docker Servers
 
@@ -24,6 +25,7 @@
 # Docker Compose
 
 *   docker-compose -f .\docker-compose.yml -f .\docker-compose.override.yml up -d --build
+*   docker-compose down
 
 
 # Catalog Service :
