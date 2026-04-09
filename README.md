@@ -6,7 +6,7 @@
 *   OrderService (Checkout)
 *   Payment (Payment)-(Simulated)
 *   Identity (Authentication and Authorization)
-*   Api Gateway (Ocelot)
+*   Api Gateway (Ocelot)<br><br>
 
 *   Logging (Serilog)
    
@@ -20,6 +20,11 @@
 *   RabbitMQ -> docker run -d --hostname rabbitmq-host --name rabbitmq -p 5672:5672 -p 15672:15672 -e RABBITMQ_DEFAULT_USER=guest -e RABBITMQ_DEFAULT_PASS=guest rabbitmq:3-management
 *   Elasticsearch -> docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:8.14.3
 *   Kibana -> docker run -d --name kibana --link elasticsearch:elasticsearch -p 5601:5601 -e "ELASTICSEARCH_HOSTS=http://elasticsearch:9200" docker.elastic.co/kibana/kibana:8.14.3
+
+# Docker Compose
+
+*   docker-compose -f .\docker-compose.yml -f .\docker-compose.override.yml up -d --build
+
 
 # Catalog Service :
 

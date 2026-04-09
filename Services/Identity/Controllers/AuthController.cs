@@ -23,12 +23,13 @@ public sealed class AuthController : ControllerBase
         _configuration = configuration;
         _logger = logger;
     }
-    
+
     [HttpGet("test")]
     public IActionResult Test()
-    {        return Ok("AuthController is working!");
+    {
+        return Ok("AuthController is working!");
     }
-    
+
     [HttpPost("register")]
     public async Task<IActionResult> Register(RegisterDto dto)
     {
@@ -48,7 +49,7 @@ public sealed class AuthController : ControllerBase
             _logger.LogWarning("Registration failed for user with email: {Email}. Errors: {Errors}", dto.Email, string.Join(", ", result.Errors.Select(e => e.Description)));
             return BadRequest(result.Errors);
         }
-        return Ok("User registered successfully");
+        return Ok(new { message = "User registered successfully" });
 
     }
 
@@ -93,7 +94,7 @@ public sealed class AuthController : ControllerBase
             expires: DateTime.UtcNow.AddMinutes(Convert.ToDouble(_configuration["Jwt:DurationInMinutes"] ?? "60")),
             signingCredentials: creds
         );
-        
+
         _logger.LogInformation("Generated JWT token for user with email: {Email}", user.Email);
         return new JwtSecurityTokenHandler().WriteToken(token);
     }

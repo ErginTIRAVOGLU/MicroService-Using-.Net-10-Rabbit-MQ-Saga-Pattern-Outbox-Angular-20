@@ -16,6 +16,6 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.7" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\InfraStructure\Common.Logging\Common.Logging.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\Common.Logging\Common.Logging.csproj" />
   </ItemGroup>
 </Project>

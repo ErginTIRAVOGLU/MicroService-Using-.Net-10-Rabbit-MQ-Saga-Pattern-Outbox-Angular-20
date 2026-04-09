@@ -2,9 +2,9 @@
   <Folder Name="/ApiGateway/">
    <Project Path="ApiGateway/ApiGateway.csproj" />
   </Folder>
-  <Folder Name="/InfraStructure/">
-    <Project Path="InfraStructure/Common.Logging/Common.Logging.csproj" />
-    <Project Path="InfraStructure/EventBus.Messages/EventBus.Messages.csproj" />
+  <Folder Name="/Infrastructure/">
+    <Project Path="Infrastructure/Common.Logging/Common.Logging.csproj" />
+    <Project Path="Infrastructure/EventBus.Messages/EventBus.Messages.csproj" />
   </Folder>
   <Folder Name="/Services/" /> 
   <Folder Name="/Services/Basket/">

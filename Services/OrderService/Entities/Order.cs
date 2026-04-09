@@ -1,8 +1,11 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace OrderService.Entities;
 
 public sealed class Order : BaseEntity
 {
     public string? UserName { get; set; }
+    [Precision(18, 2)]
     public decimal? TotalPrice { get; set; }
     public string? FirstName { get; set; }
     public string? LastName { get; set; }

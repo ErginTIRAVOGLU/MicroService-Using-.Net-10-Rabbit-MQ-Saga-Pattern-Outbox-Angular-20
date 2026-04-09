@@ -1,0 +1,220 @@
+services:
+ catalogdb:
+    container_name: catalogdb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongosh", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    
+ basketdb:
+    container_name: basketdb
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    ports:
+      - "6379:6379" 
+ 
+ discountdb:
+    container_name: discountdb
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=Password@1
+      - POSTGRES_DB=DiscountDb
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U admin"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    depends_on:
+      catalogdb:
+        condition: service_healthy
+      
+ orderdb:
+    container_name: orderdb
+    environment:
+      SA_PASSWORD: "Passw0rd!123"
+      ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+      - "1433:1433"
+    volumes:
+      - orderdb-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "(/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Passw0rd!123' -Q 'SELECT 1' -C || exit 1)"]
+      interval: 10s
+      timeout: 20s
+      retries: 5
+      start_period: 20s
+         
+ identitydb:
+    container_name: identitydb
+    environment:
+      SA_PASSWORD: "Passw0rd!123"
+      ACCEPT_EULA: "Y"
+    restart: always
+    ports:
+      - "1434:1433"
+    volumes:
+      - identitydb-data:/var/opt/mssql
+    healthcheck:
+      test: ["CMD-SHELL", "(/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Passw0rd!123' -Q 'SELECT 1' -C || exit 1)"]
+      interval: 10s
+      timeout: 20s
+      retries: 5
+      start_period: 20s     
+  
+ rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    healthcheck:
+      test: ["CMD-SHELL", "rabbitmqctl status || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+ pgadmin:
+    container_name: pgadmin
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@eCommerce.net
+      - PGADMIN_DEFAULT_PASSWORD=Password@1
+    restart: always
+    ports:
+      - "5050:80"
+    volumes:
+      - pgadmin_data:/root/.pgadmin
+ portainer:
+    container_name: portainer
+    restart: always
+    ports:
+      - "8080:8000"
+      - "9090:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+ catalog:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings__ConnectionString=mongodb://catalogdb:27017"
+      - "DatabaseSettings__DatabaseName=CatalogDb"
+      - "DatabaseSettings__ProductCollectionName=Products"
+      - "DatabaseSettings__BrandCollectionName=Brands"
+      - "DatabaseSettings__TypeCollectionName=Types" 
+      - "ElasticConfiguration__Uri=http://elasticsearch:9200" 
+    depends_on:
+      - catalogdb          
+    ports:
+      - "8001:8080"  
+
+ basket:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "CacheSettings__ConnectionString=basketdb:6379"
+      - "GrpcSettings__DiscountUrl=http://discount:8080" 
+      - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672/"
+      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+    depends_on:
+      basketdb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy 
+    ports:
+      - "8002:8080"
+
+ discount:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings__ConnectionString=Server=discountdb;Port=5432;Database=DiscountDb;User Id=admin;Password=Password@1;"
+      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+    depends_on:
+       - discountdb          
+    ports:
+      - "8003:8080"
+ ordering:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings__OrderServiceConnectionString=Server=orderdb;Database=OrderDb;User Id=sa;Password=Passw0rd!123;TrustServerCertificate=True;"
+      - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672/"
+      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+    depends_on:
+      orderdb:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy           
+    ports:
+      - "8004:8080"
+    
+ payment:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672/"
+      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+    depends_on:
+      rabbitmq:
+        condition: service_healthy 
+    ports:
+      - "8005:8080"    
+ identity:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "ConnectionStrings__IdentityConnection=Server=identitydb;Database=IdentityDb;User Id=sa;Password=Passw0rd!123;TrustServerCertificate=True;"
+      - "Jwt__Key=super_secure_secret_key_1234567890!@#"
+      - "Jwt__Issuer=ecommerce.identity"
+      - "Jwt__Audience=ecommerce.clients"
+      - "Jwt__DurationInMinutes=60"
+      - "ElasticConfiguration__Uri=http://elasticsearch:9200"
+    depends_on:
+      - identitydb          
+    ports: 
+      - "8006:8080"
+
+ ocelot.apigateway:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "Jwt__Key=super_secure_secret_key_1234567890!@#"
+      - "Jwt__Issuer=ecommerce.identity"
+      - "Jwt__Audience=ecommerce.clients"
+    depends_on:
+      - identity
+      - catalog
+      - basket
+      - ordering
+      - payment
+      - discount
+    ports:
+      - "8030:8080"                 
+ elasticsearch:
+    container_name: elasticsearch
+    environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+
+ kibana:
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_URL=http://elasticsearch:9200
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"

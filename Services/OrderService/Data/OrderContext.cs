@@ -17,6 +17,11 @@ public sealed class OrderContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        modelBuilder.Entity<Order>(entity =>
+        {
+            entity.Property(e => e.TotalPrice)
+                .HasPrecision(18, 2); // 18 Toplam Basamak, 2 Ondalık Basamak
+        });
         modelBuilder.Entity<OutboxMessage>(builder =>
         {
             builder.HasKey(x => x.Id);

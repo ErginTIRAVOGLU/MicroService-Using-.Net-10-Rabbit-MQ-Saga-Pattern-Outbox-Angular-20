@@ -214,7 +214,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/auth/{everything}",
+      "DownstreamPathTemplate": "/api/v1/Auth/{everything}",
       "DownstreamScheme": "http",
       "DownstreamHostAndPorts": [
         {
@@ -222,7 +222,7 @@
           "Port": 8006
         }
       ],
-      "UpstreamPathTemplate": "/identity/api/auth/{everything}",
+      "UpstreamPathTemplate": "/auth/{everything}",
       "UpstreamHttpMethod": [ "POST", "GET" ],
       "AddHeadersToRequest": {
         "x-correlation-id": "{X-Correlation-Id}"
@@ -232,6 +232,6 @@
 
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:8080"
+    "BaseUrl": "https://localhost:8030"
   }
 }
