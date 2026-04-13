@@ -1,0 +1,36 @@
+<nav class="navbar">
+    <!-- Left side of the navbar: Logo + Departments -->
+    <div class="navbar__left">
+        <a routerLink="/" class="navbar__logo"><fa-icon [icon]="faCoffee" />Amazing</a>
+        <button class="navbar__departments"><fa-icon [icon]="faUser" />Departments</button>
+    </div>
+    <!-- Center:Search -->
+    <div class="navbar__center">
+         <select class="navbar__category">
+            <option value="all">All</option>
+            <option value="electronics">Electronics</option>
+            <option value="fashion">Fashion</option>
+            <option value="home">Home</option>
+            <option value="books">Books</option>
+         </select>
+         <input 
+            [(ngModel)]="searchText"
+            type="text" 
+            class="navbar__search"
+            placeholder="Search for products..." 
+            (keyup.enter)="onSearch()"/>
+        <button 
+            class="navbar__search-btn" 
+            (click)="onSearch()">Search</button>
+    </div>
+    <!-- Right:Account+ Cart -->
+     <div class="navbar__right">
+        <a routerLink="/account" class="navbar__link">
+            Hello, Sign in<br /><span>Account & Orders</span>
+        </a>
+        <a routerLink="/basket" class="navbar__link navbar__cart">
+            Cart
+            <span class="navbar__cart-badge">{{cartCount}}</span>
+        </a>
+     </div>
+</nav>
