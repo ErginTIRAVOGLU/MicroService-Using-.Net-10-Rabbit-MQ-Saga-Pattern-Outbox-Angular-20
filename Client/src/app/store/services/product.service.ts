@@ -12,7 +12,7 @@ export class ProductService {
     private http = inject(HttpClient);
 
     // Gateway URL
-    private baseUrl = 'http://localhost:8010/Catalog';
+    private baseUrl = 'http://localhost:8030/Catalog';
 
     getAllProducts(
         page: number,
@@ -30,19 +30,19 @@ export class ProductService {
         if (search) params.push(`search=${encodeURIComponent(search)}`);
 
         return this.http.get<CatalogResponse>(
-            `${this.baseUrl}/GetAllProducts?${params.join('&')}`
+            `${this.baseUrl}/Products?${params.join('&')}`
         );
     }
 
     getAllBrands(): Observable<Brand[]> {
-        return this.http.get<Brand[]>(`${this.baseUrl}/GetAllBrands`);
+        return this.http.get<Brand[]>(`${this.baseUrl}/Brands`);
     }
 
     getAllTypes(): Observable<Type[]> {
-        return this.http.get<Type[]>(`${this.baseUrl}/GetAllTypes`);
+        return this.http.get<Type[]>(`${this.baseUrl}/Types`);
     }
 
     GetProductById(id: string): Observable<Product> {
-        return this.http.get<Product>(`${this.baseUrl}/${id}`);
+        return this.http.get<Product>(`${this.baseUrl}/Products/${id}`);
     }
 }

@@ -6,7 +6,8 @@
 *   OrderService (Checkout)
 *   Payment (Payment)-(Simulated)
 *   Identity (Authentication and Authorization)
-*   Api Gateway (Ocelot)<br><br>
+*   Api Gateway (Ocelot)
+*   Client-Frontend (Angular)<br><br>
 
 *   Logging (Serilog)
 *   Docker Servers (MongoDB, Redis, PostgreSql, Mssql, RabbitMQ, Elasticsearch, Kibana)

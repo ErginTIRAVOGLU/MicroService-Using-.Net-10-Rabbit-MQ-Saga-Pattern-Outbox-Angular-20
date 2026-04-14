@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject, signal, type OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import type { Product } from '../models/Product';
 import type { Brand } from '../models/Brand';
@@ -8,7 +8,7 @@ import type { Type } from '../models/Type';
 
 @Component({
   selector: 'app-store',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule],
   standalone: true,
   templateUrl: './store.html',
   styleUrl: './store.scss',
@@ -37,7 +37,7 @@ export class Store implements OnInit {
     this.loadProducts();
     this.loadBrands();
     this.loadTypes();
-    
+
     // Listen to query params for search term
     this.route.queryParams.subscribe(params => {
       this.searchTerm.set(params['search'] || '');
@@ -46,7 +46,37 @@ export class Store implements OnInit {
     });
   }
 
+  loadProducts() {
+    this.productService.getAllProducts(
+      this.currentPage(),
+      this.pageSize,
+      this.selectedBrand(),
+      this.selectedType(),
+      this.sortOption(),
+      this.searchTerm()
+    ).subscribe(response => {
+      this.products.set(response.data);
+      this.totalCount.set(response.count);
+    });
+  }
 
+  loadBrands() {
+    this.productService.getAllBrands().subscribe(response => {
+      this.brands.set(response);
+    });
+  }
+
+  loadTypes() {
+    this.productService.getAllTypes().subscribe(response => {
+      this.types.set(response);
+    });
+  }
+
+  // Appluy filters
+  applyFilters() {
+    this.currentPage.set(1); // Reset to first page on filter change
+    this.loadProducts();
+  }
 
 
   // Filtered products based on search term
@@ -73,13 +103,26 @@ export class Store implements OnInit {
 
     // Apply brand filter
     if (this.selectedBrand()) {
-      filtered = filtered.filter(p => p.brand === this.selectedBrand());
+      filtered = filtered.filter(p => p.brand.name === this.selectedBrand());
     }
 
     // Apply type filter
     if (this.selectedType()) {
-      filtered = filtered.filter(p => p.type === this.selectedType());
+      filtered = filtered.filter(p => p.type.name === this.selectedType());
     }
+
+    if (this.searchTerm()) {
+      const term = this.searchTerm().toLowerCase();
+      filtered = filtered.filter(p =>
+        p.name.toLowerCase().includes(term) ||
+        p.brand.name.toLowerCase().includes(term) ||
+        p.type.name.toLowerCase().includes(term) ||
+        (p.description && p.description.toLowerCase().includes(term))
+      );
+    }
+
+
+
 
     // Apply sorting
     if (this.sortOption() === 'priceAsc') {
@@ -98,6 +141,7 @@ export class Store implements OnInit {
     this.selectedType.set(null);
     this.sortOption.set('default');
     this.currentPage.set(1);
+    this.loadProducts();
   };
 
   paginatedProducts = computed(() => {
@@ -106,12 +150,13 @@ export class Store implements OnInit {
   });
 
   totalPages = computed(() => {
-    return Math.ceil(this.filteredProducts().length / this.pageSize);
+    return Math.ceil(this.totalCount() / this.pageSize);
   });
 
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages()) {
       this.currentPage.set(page);
+      this.loadProducts();
     }
   }
 
