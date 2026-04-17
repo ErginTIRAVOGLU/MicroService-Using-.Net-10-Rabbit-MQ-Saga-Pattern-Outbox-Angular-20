@@ -38,8 +38,9 @@
               <a class="btn-details" 
                 [routerLink]="['/store/product', product.id]"
                 [attr.href]="'/store/product/' + product.id">
-                View Details
+                🔍 View Details
               </a>
+              <button class="btn-cart" (click)="addToCart(product)">🛒 Add to Cart</button>
             </div>
           </div>
         }

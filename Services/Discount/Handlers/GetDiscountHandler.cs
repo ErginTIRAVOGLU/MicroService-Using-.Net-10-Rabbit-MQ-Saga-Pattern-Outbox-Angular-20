@@ -23,17 +23,16 @@ public sealed class GetDiscountHandler : IRequestHandler<GetDiscountQuery, Coupo
         if (string.IsNullOrWhiteSpace(request.ProductName))
         {
             var validationErrors = new Dictionary<string, string>
-        {
-            {"ProductName","Product name must not be empty"}
-        };
-            // ❌ throw eksikti!
-            throw GrpcErrorhelper.CreateValidationException(validationErrors);
+            {
+                {"ProductName","Product name must not be empty"}
+            };
         }
 
         var coupon = await _discountRepository.GetDiscount(request.ProductName); // productName -> ProductName
         if (coupon == null)
         {
-            throw new RpcException(new Status(StatusCode.NotFound, $"Discount for the Product Name = {request.ProductName} not found"));
+            return new CouponDto(0, request.ProductName, "No discount", 0);
+            // throw new RpcException(new Status(StatusCode.NotFound, $"Discount for the Product Name = {request.ProductName} not found"));
         }
 
         return coupon.ToDto();

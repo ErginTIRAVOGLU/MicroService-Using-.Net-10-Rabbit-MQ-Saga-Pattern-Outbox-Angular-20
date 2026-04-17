@@ -31,7 +31,7 @@ public sealed class CreateShoppingCartHandler : IRequestHandler<CreateShoppingCa
 
         var updatedCart = await _basketRepository.UpsertBasket(shoppingCartEntity);
 
-        var respose = (ShoppingCartResponse)updatedCart!;
+        var respose = (ShoppingCartResponse)updatedCart!.ToResponse();
         return respose;
     }
 

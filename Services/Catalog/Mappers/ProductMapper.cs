@@ -18,6 +18,7 @@ public static class ProductMapper
             product.Summary,
             product.Description,
             product.ImageFile,
+            product.Price,
             new BrandDto(product.Brand.Id!,product.Brand.Name),
             new TypeDto(product.Type.Id!,product.Type.Name),
             product.CreatedDate

@@ -9,6 +9,7 @@ public  sealed record ProductDto(
     string Summary,
     string Description,
     string ImageFile,
+    decimal price,
     BrandDto Brand,
     TypeDto Type,
     DateTimeOffset CreatedDate

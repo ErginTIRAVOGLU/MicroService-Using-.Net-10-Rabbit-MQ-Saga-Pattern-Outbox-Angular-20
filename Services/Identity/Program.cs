@@ -77,14 +77,37 @@ builder.Services.AddAuthentication(options =>
 builder.Services.AddAuthorization();
 
 
- 
+
 
 var app = builder.Build();
 
- using(var scope = app.Services.CreateScope())
+using var scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService<AppIdentityDbContext>();
+
+  
+var retry = 0;
+var maxRetry = 10;
+
+while (retry < maxRetry)
 {
-    var db = scope.ServiceProvider.GetRequiredService<AppIdentityDbContext>();
-    db.Database.Migrate();
+    try
+    {
+        Console.WriteLine("Trying DB migration...");
+
+        db.Database.Migrate();
+
+        Console.WriteLine("DB ready ✅");
+        break;
+    }
+    catch (Exception ex)
+    {
+        retry++;
+
+        Console.WriteLine($"DB not ready yet ({retry})...");
+        Console.WriteLine(ex.Message);
+
+        Thread.Sleep(3000);
+    }
 }
 
 // Configure the HTTP request pipeline.

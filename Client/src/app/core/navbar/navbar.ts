@@ -6,6 +6,8 @@ import { FaIconComponent } from '@fortawesome/angular-fontawesome';
 import { faUser, faCoffee } from '@fortawesome/free-solid-svg-icons';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { BasketService } from '../../store/services/basket.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-navbar',
@@ -19,9 +21,14 @@ export class Navbar {
   faCoffee = faCoffee;
 
   searchText = '';
-  cartCount = 0; // TODO: Replace with actual cart count from a service
+  private basketService = inject(BasketService);
+  private authService = inject(AuthService);
 
   private router = inject(Router);
+
+  get cartCount() {
+    return this.basketService.basketCount();
+  }
 
   onSearch() {
     const term = this.searchText.trim();
@@ -30,5 +37,18 @@ export class Navbar {
     } else {
       this.router.navigate(['/store']);
     }
+  }
+
+  get isLoggedIn():boolean {
+    return this.authService.isLoggedIn();
+  }
+
+  get userName(): string | null {
+    return this.authService.getUserName();
+  }
+
+  logout(){
+    this.authService.logout();
+    this.router.navigateByUrl("/auth/login");
   }
 }
