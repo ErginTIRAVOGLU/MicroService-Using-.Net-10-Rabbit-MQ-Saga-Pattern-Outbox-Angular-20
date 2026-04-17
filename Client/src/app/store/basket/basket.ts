@@ -67,7 +67,7 @@ export class BasketComponent implements OnInit {
         next:(res) => this.basketService.setBasket(res),
         error: (err) => console.error('Error updating basket', err)
       });
-    }
+    } 
   }
 
   checkout(){
