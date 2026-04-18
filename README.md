@@ -1,4 +1,22 @@
-## All Service List
+## 🚀 E-Commerce Microservices Project
+
+This project is a full-stack microservices-based e-commerce system built with modern technologies and best practices.
+
+It demonstrates:
+
+*   Scalable microservice architecture
+*   Event-driven communication
+*   Clean Architecture + CQRS pattern
+*   Containerized development with Docker
+
+## 🧠 Architecture Overview
+*   Microservices Architecture
+*   CQRS + MediatR
+*   Event-driven communication (RabbitMQ + MassTransit)
+*   API Gateway (Ocelot)
+*   Centralized Logging (Serilog + Elasticsearch + Kibana)
+
+## 🧩 All Service List
 
 *   Catalog (Products)    
 *   Basket (Carts)    
@@ -12,7 +30,7 @@
 *   Logging (Serilog)
 *   Docker Servers (MongoDB, Redis, PostgreSql, Mssql, RabbitMQ, Elasticsearch, Kibana)
    
-# Docker Servers
+# 🐳 Docker Servers
 
 *   MongoDB -> docker run -d -p 27017:27017 --name mongodb-server -e MONGO_INITDB_ROOT_USERNAME="admin" -e MONGO_INITDB_ROOT_PASSWORD="pass1234567" mongo
 *   Redis -> docker run -d --name redis-server -p 6379:6379 redis
@@ -23,20 +41,26 @@
 *   Elasticsearch -> docker run -d --name elasticsearch -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" -e "xpack.security.enabled=false" docker.elastic.co/elasticsearch/elasticsearch:8.14.3
 *   Kibana -> docker run -d --name kibana --link elasticsearch:elasticsearch -p 5601:5601 -e "ELASTICSEARCH_HOSTS=http://elasticsearch:9200" docker.elastic.co/kibana/kibana:8.14.3
 
-# Docker Compose
+## ⚡Docker Quick Start
+### Run all services with Docker
+``` 
+docker-compose -f .\docker-compose.yml -f .\docker-compose.override.yml up -d --build 
+```
 
-*   docker-compose -f .\docker-compose.yml -f .\docker-compose.override.yml up -d --build
-*   docker-compose down
+### Stop services
+```
+   docker-compose down
+```
 
 
-# Catalog Service :
+### 📦 Catalog Service :
 
 *   MediatR    
 *   MongoDB    
 *   Swagger
     
 
-# Basket Service :
+### 🛒 Basket Service :
 
 *   MediatR    
 *   Redis    
@@ -46,7 +70,7 @@
 *   RabbitMQ (Publisher/Producer)
     
 
-# Discount Service :
+### 🎟️ Discount Service :
 
 *   MediatR    
 *   PostgreSql    
@@ -54,7 +78,7 @@
 *   Grpc - (Server)
 
 
-# Order Service :
+### 📦 Order Service :
 
 *   MediatR
 *   Mssql Server
@@ -64,26 +88,59 @@
 *   MassTransit
 *   RabbitMQ (Subscriber/Consumer)
 
-# Payment Service (Simulated) :
+### 💳 Payment Service (Simulated) :
 
 *   MassTransit
 *   RabbitMQ (Subscriber/Consumer)
 *   Swagger
 
-# Identity Service :
+### 🔐 Identity Service :
 
 *   Mssql Server
 *   Entity Framework Core
-*   ASP.NET Core Identity
+*   ASP .NET Core Identity
 *   JWT Authentication
 *   Swagger
 
-# API Gateway (Ocelot) :
+### 🌐 API Gateway (Ocelot) :
 
 *   Ocelot
 
-# Logging (Serilog) :
+### 📊 Logging (Serilog) :
 
 *   Serilog
 *   Elasticsearch
 *   Kibana
+
+## 📸 Screenshots
+
+### Architecture Diagram (ChatGPT)
+![Architecture Diagram](Screenshots/ChatGPT%20Image%2018%20Nis%202026%2019_21_37.png)
+
+### Home Page
+![Home Page](Screenshots/HomePage.png)
+
+### Store Page
+![Store Page](Screenshots/StorePage.png)
+
+### Filtered Store Page
+![Filtered Store Page](Screenshots/FilteredStorePage.png)
+
+### Product Details Page
+![Product Details Page](Screenshots/ProductDetailsPage.png)
+
+### Shopping Cart Page
+![Shopping Cart Page](Screenshots/ShoppingCartPage.png)
+
+### Checkout Page
+![Checkout Page](Screenshots/CheckoutPage.png)
+
+### Login Page
+![Login Page](Screenshots/LoginPage.png)
+
+### Orders Page
+![Orders Page](Screenshots/OrdersPage.png)
+
+### Order Completed Page
+![Order Completed Page](Screenshots/OrderCompletedPage.png)
+

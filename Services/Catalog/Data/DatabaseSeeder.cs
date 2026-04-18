@@ -36,7 +36,7 @@ public sealed class DatabaseSeeder
             brandList = JsonSerializer.Deserialize<List<ProductBrand>>(brandData) ?? new List<ProductBrand>();
             foreach (var brand in brandList)
             {
-                brand.Id = null;
+                //brand.Id = null;
                 if (brand.CreatedDate == default)
                 {
                     brand.CreatedDate = DateTime.UtcNow;
@@ -60,7 +60,7 @@ public sealed class DatabaseSeeder
             typeList = JsonSerializer.Deserialize<List<ProductType>>(typeData) ?? new List<ProductType>();
             foreach (var type in typeList)
             {
-                type.Id = null;
+                //type.Id = null;
                 if (type.CreatedDate == default)
                 {
                     type.CreatedDate = DateTime.UtcNow;

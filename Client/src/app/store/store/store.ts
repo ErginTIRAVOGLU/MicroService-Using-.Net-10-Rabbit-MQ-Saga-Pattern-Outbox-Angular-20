@@ -44,6 +44,9 @@ export class Store implements OnInit {
     // Listen to query params for search term
     this.route.queryParams.subscribe(params => {
       this.searchTerm.set(params['search'] || '');
+      this.selectedTypeId.set(params['typeId'] || null);
+      this.selectedBrandId.set(params['brandId'] || null);
+      this.sortOption.set(params['sort'] || 'default');
       this.currentPage.set(1); // Reset to first page on new search
       this.loadProducts();
     });
@@ -53,8 +56,8 @@ export class Store implements OnInit {
     this.productService.getAllProducts(
       this.currentPage(),
       this.pageSize,
-      this.selectedBrand(),
-      this.selectedType(),
+      this.selectedBrandId(),
+      this.selectedTypeId(),
       this.sortOption(),
       this.searchTerm()
     ).subscribe(response => {
@@ -83,8 +86,8 @@ export class Store implements OnInit {
 
 
   // Filtered products based on search term
-  selectedBrand = signal<string | null>(null);
-  selectedType = signal<string | null>(null);
+  selectedBrandId = signal<string | null>(null);
+  selectedTypeId = signal<string | null>(null);
   sortOption = signal('default');
 
   // Pagination
@@ -92,7 +95,7 @@ export class Store implements OnInit {
   currentPage = signal(1);
 
 
-
+  /*
   // Combine filters and sorting to get the final product list
   filteredProducts = computed(() => {
     let filtered = this.products();
@@ -136,7 +139,7 @@ export class Store implements OnInit {
 
     return filtered;
   });
-
+  */
   addToCart(p: Product) {
     const newItem: BasketItem = {
       productId: p.id,
@@ -178,21 +181,22 @@ export class Store implements OnInit {
   // Reset filters when search term changes
   resetFilters() {
     this.searchTerm.set('');
-    this.selectedBrand.set(null);
-    this.selectedType.set(null);
+    this.selectedBrandId.set(null);
+    this.selectedTypeId.set(null);
     this.sortOption.set('default');
     this.currentPage.set(1);
     this.loadProducts();
   };
 
+  /*
   paginatedProducts = computed(() => {
     const start = (this.currentPage() - 1) * this.pageSize;
     return this.filteredProducts().slice(start, start + this.pageSize);
   });
+  */
 
-  totalPages = computed(() => {
-    return Math.ceil(this.totalCount() / this.pageSize);
-  });
+  totalPages =() => Math.ceil(this.totalCount() / this.pageSize);
+  
 
   goToPage(page: number) {
     if (page >= 1 && page <= this.totalPages()) {
@@ -200,5 +204,4 @@ export class Store implements OnInit {
       this.loadProducts();
     }
   }
-
 }

@@ -25,7 +25,7 @@
   <!-- Right:Account+ Cart -->
   <div class="navbar__right">
     @if (isLoggedIn) {
-      <a routerLink="/orders" class="navbar__link">
+      <a routerLink="/store/orders" class="navbar__link">
         Hello, {{ userName }} <br /><span>Account & Orders</span>
       </a>
       <button class="navbar__link navbar__logout" (click)="logout()">Logout</button>

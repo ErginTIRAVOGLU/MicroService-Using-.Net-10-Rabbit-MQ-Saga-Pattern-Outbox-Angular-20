@@ -20,7 +20,7 @@ export class Orders implements OnInit {
 
   ngOnInit(): void {
     const userName='ergin'; // TODO: this.authService.getUserName();
-    this.http.get<Order[]>(`/Order/${userName}`).subscribe({
+    this.http.get<Order[]>(`http://localhost:8030/Order/${userName}`).subscribe({
       next: (res) => {
         const sorted = res.sort((a, b) => b.id - a.id);
         this.orders.set(sorted);

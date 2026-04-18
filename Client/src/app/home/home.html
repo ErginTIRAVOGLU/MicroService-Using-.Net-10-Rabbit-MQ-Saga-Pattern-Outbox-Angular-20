@@ -1,4 +1,27 @@
 <div class="home">
-    <h1>Welcome to the E-commerce Application</h1>
-    <p>Explore our wide range of products and enjoy seamless shopping experience. </p>
+  <section class="home__hero">
+    <div class="home__hero-content">
+      <h1>Welcome to the E-commerce Application</h1>
+      <p>Explore our wide range of products and enjoy seamless shopping experience.</p>
+      <button routerLink="/store" class="btn-primary">Explore Store</button>
+    </div>
+  </section>
+
+  <section class="home__categories">
+    <h2>Browse Categories</h2>
+    <div class="categories__grid">
+        @for(cat of categories; track cat.id){
+            <div class="category__card" (click)="goToCategory(cat)">
+                <img [src]="cat.image" [alt]="cat.name" />
+                <h1>{{cat.name}}</h1>
+            </div>
+        }
+    </div>
+  </section>
+
+  <section class="home__promo">
+    <h2>Limited Time Offers</h2>
+    <p>Check out our exckusive deals and discounts. Don't miss out!</p>
+    <button routerLink="/store" class="btn-secondary">View Deals</button>
+  </section>
 </div>
